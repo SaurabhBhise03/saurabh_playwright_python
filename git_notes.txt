@@ -1,0 +1,64 @@
+# Git Automation Project Setup Log
+# Author: Saurabh Bhise <saurabhskb03@gmail.com>
+# Project: Saurabh_Playwright-Python
+
+# -------------------------------------------------------------
+# 1. CHECK GIT VERSION
+# -------------------------------------------------------------
+# Checks the current version of Git installed on the system.
+git --version
+
+
+# -------------------------------------------------------------
+# 2. CONFIGURE GLOBAL USER IDENTITY
+# -------------------------------------------------------------
+# Sets the author name globally for all commits made on this machine.
+git config --global user.name "Saurabh Bhise"
+
+# Sets the author email globally. Connects local commits to GitHub account.
+git config --global user.email "saurabhskb03@gmail.com"
+
+
+# -------------------------------------------------------------
+# 3. INITIALIZE LOCAL REPOSITORY
+# -------------------------------------------------------------
+# Creates a hidden .git folder in the root directory to start tracking changes.
+git init
+
+
+# -------------------------------------------------------------
+# 4. STAGE ALL DRAFTED FILES
+# -------------------------------------------------------------
+# Adds all files, folders, and scripts in the current directory to the staging area.
+git add .
+
+
+# -------------------------------------------------------------
+# 5. COMMIT CHANGES TO HISTORY
+# -------------------------------------------------------------
+# Saves the staged files as a permanent snapshot in the local Git history.
+git commit -m "10 UI, 10 API and 1 Hybrid Test"
+
+
+# -------------------------------------------------------------
+# 💡 CRITICAL RESUME & GITHUB CLEANUP TIP
+# -------------------------------------------------------------
+# Your first commit included automated files like '__pycache__/' and 'reports/'.
+# Recruiters look for clean code. To fix this and keep your repo professional:
+#
+# STEP A: Undo the commit but keep your code intact:
+#   git reset --soft HEAD~1
+#
+# STEP B: Unstage all the files:
+#   git reset
+#
+# STEP C: Create a '.gitignore' file in the root folder and add these lines:
+#   __pycache__/
+#   *.pyc
+#   reports/
+#   .env
+#
+# STEP D: Re-stage and re-commit the clean files:
+#   git add .
+#   git commit -m "Initial commit: Playwright-Python Test Automation Framework"
+# -------------------------------------------------------------
