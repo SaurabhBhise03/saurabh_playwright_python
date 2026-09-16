@@ -1,0 +1,55 @@
+stages:
+  - install
+  - test
+  - report
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip/
+    - venv/
+
+install_dependencies:
+  stage: install
+  image: python:3.11-slim
+  script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    # Install browser binaries along with system level OS libraries dynamically
+    - python -m playwright install chromium
+    - python -m playwright install-deps
+  artifacts:
+    paths:
+      - venv/
+    expire_in: 1 day
+
+run_parallel_tests:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - source venv/bin/activate
+    # Execute through pytest-xdist utilizing parallel workers across modules
+    - pytest --alluredir=allure-results
+  artifacts:
+    when: always
+    paths:
+      - Execution_Report_*/
+      - allure-results/
+    expire_in: 7 days
+
+compile_allure:
+  stage: report
+  image: node:alpine
+  allow_failure: true
+  script:
+    - npm install -g allure-commandline
+    - allure generate allure-results --clean -o allure-report
+  artifacts:
+    when: always
+    paths:
+      - allure-report/
+    expire_in: 7 days

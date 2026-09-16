@@ -1,0 +1,1 @@
+{"uuid": "c1f4676f-c1fb-4c75-a2b9-694111f37997", "children": ["e71ee317-4b00-4298-ab9d-bae41906d233"], "befores": [{"name": "excel_logger", "status": "passed", "start": 1789533865479, "stop": 1789533865479}], "afters": [{"name": "excel_logger::<lambda>", "start": 1789533865501}], "start": 1789533865479, "stop": 1789533865501}

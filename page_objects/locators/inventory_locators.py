@@ -1,0 +1,11 @@
+class InventoryLocators:
+    """Isolated reference repository documenting explicitly targeted core authenticated space selectors."""
+    INVENTORY_CONTAINER = "#inventory_container"
+    HEADER_TITLE = ".title"
+    INVENTORY_ITEMS = ".inventory_item"
+    ADD_TO_CART_BTN = "button[data-test^='add-to-cart']"
+    REMOVE_FROM_CART_BTN = "button[data-test^='remove']"
+    CART_BADGE = ".shopping_cart_badge"
+    SORT_DROPDOWN = ".product_sort_container"
+    SIDEBAR_BURGER_MENU = "#react-burger-menu-btn"
+    LOGOUT_SIDEBAR_LINK = "#logout_sidebar_link"

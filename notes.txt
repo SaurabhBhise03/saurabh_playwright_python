@@ -1,0 +1,124 @@
+playwright_framework/
+├── .gitlab-ci.yml
+├── pytest.ini
+├── requirements.txt
+├── config/
+│   ├── config.json
+│   └── state/
+│       └── .gitkeep
+├── test_data/
+│   ├── ui_data/
+│   │   ├── test_login_matrix.json
+│   │   ├── test_add_to_cart.json
+│   │   ├── test_remove_from_cart.json
+│   │   ├── test_sorting_az.json
+│   │   ├── test_sorting_za.json
+│   │   ├── test_sorting_lohi.json
+│   │   ├── test_sorting_hilo.json
+│   │   ├── test_checkout_flow.json
+│   │   ├── test_sidebar_logout.json
+│   │   └── test_locked_out_user.json
+│   └── api_data/
+│       ├── test_get_users.json
+│       ├── test_get_single_user.json
+│       ├── test_user_not_found.json
+│       ├── test_create_user.json
+│       ├── test_update_user_put.json
+│       ├── test_update_user_patch.json
+│       ├── test_delete_user.json
+│       ├── test_register_success.json
+│       ├── test_register_unsuccessful.json
+│       ├── test_login_api_success.json
+│       └── test_hybrid_sync.json
+├── utils/
+│   ├── __init__.py
+│   ├── data_reader.py
+│   ├── excel_reporter.py
+│   └── api_client.py
+├── page_objects/
+│   ├── __init__.py
+│   ├── locators/
+│   │   ├── login_locators.py
+│   │   └── inventory_locators.py
+│   └── pages/
+│       ├── base_page.py
+│       ├── login_page.py
+│       └── inventory_page.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── test_ui/
+│   │   └── test_sauce_ui.py
+│   ├── test_api/
+│   │   └── test_reqres_api.py
+│   └── test_hybrid/
+│       └── test_hybrid_flow.py
+├── README.md
+|
+└── reports/                         <-- Flat parent category container
+    └── Run_20260916_095512/         <-- Unique execution folder created per run
+        ├── Execution_Summary.xlsx   <-- The isolated run summary spreadsheet
+        ├── screenshots/             <-- Captures linked inside the Excel above
+        │   └── test_add_to_cart_Step01_Navigated_To_URL.png
+        └── allure-results/          <-- Raw JSON data for this isolated run
+            ├── container.json
+            └── result.json
+
+# Verify pip is running out of your active virtual environment
+pip --version
+
+# Install all framework requirements at once
+pip install -r requirements.txt
+
+# Manual installation of individual plugins and extensions if requirements.txt is absent
+pip install playwright pytest-playwright pytest-xdist allure-pytest openpyxl pillow
+
+# Download the isolated Chromium browser binaries into your active virtual environment
+python -m playwright install chromium
+
+# Verify pytest successfully registers all parallel xdist and reporting plugins
+pytest --version
+
+# Run the test matrix parallelly across 3 active, visible browser windows simultaneously
+python -m pytest -v -n 3 --headed
+
+# Execute tests visually with an added 500ms delay between actions to clearly track step behaviors
+python -m pytest -v -n 3 --headed --slowmo 500
+
+#runtime:
+pip install -r requirements.txt
+python -m playwright install chromium install-deps
+
+#Execute tests via the pytest-xdist parallel worker allocation strategy:
+python -m pytest -v -n 3
+
+
+
+# Automatically tracks host CPU logical configurations allocating proportional isolated threads
+pytest -n auto --dist=loadfile --alluredir=allure-results
+
+# Enforces hard constraints capping thread pools to prevent resource exhaustion on low-spec CI nodes
+pytest -n 4 --dist=loadgroup --alluredir=allure-results
+
+
+@pytest.mark.ui: Placed above the TestSauceUiAutomation class to group all web UI features.
+@pytest.mark.api: Placed above the TestReqResApiAutomation class to group backend REST requests.
+@pytest.mark.auth: Placed specifically above test_generate_auth_state and test_consume_auth_state to pinpoint token manipulation tests.
+@pytest.mark.integration: Placed above your hybrid API-to-UI flow.
+
+# Execute only the web interface test cases (Headed, 3 parallel windows)
+python -m pytest -v -m ui -n 3 --headed
+
+# Execute only the fast backend REST API CRUD verification suites
+python -m pytest -v -m api
+
+# Execute only the token preservation and storage state test cases
+python -m pytest -v -m auth --headed
+
+# Execute only the hybrid cross-layer end-to-end integration workflows
+python -m pytest -v -m integration --headed
+
+# Complex filter: Run every single test scenario in the framework EXCEPT the API suites
+python -m pytest -v -m "not api" -n 2 --headed
+
+
